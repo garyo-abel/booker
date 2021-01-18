@@ -17,33 +17,36 @@ class BooksController < ApplicationController
     @new_book.user_id = current_user.id
     
     if @new_book.save
-      redirect_to user_path(current_user.id), notice: '本の投稿に成功しました'
+      redirect_to book_path(@new_book), notice: '本の投稿に成功しました successfully'
     else
       @user = current_user
-      flash.now[:alert] = '本の投稿に失敗しました'
-      render('user/show')
+      @books = Book.all
+      render :index
     end
   end
   
   def destroy
     @book = Book.find(params[:id])
     @book.delete
-    redirect_to user_path(current_user)
+    redirect_to books_path
   end
     
   def edit
     @book = Book.find(params[:id])
+    unless @book.user.id == current_user.id
+      redirect_to books_path
+    end
   end
   
   def update
     @book = Book.find(params[:id])
     @book.user_id = current_user.id
-    if @book.update(book_params)
-      redirect_to user_path(current_user), notice: '本を更新しました'
+    if @book.user.id == current_user.id && @book.update(book_params)
+      redirect_to book_path(@book), notice: '本を更新しました successfully'
     else
       @user = current_user
-      flash.now[:alert] = '本の更新に失敗しました'
-      render('user/show')
+      flash.now[:alert] = '本の更新に失敗しました error'
+      render :edit
     end
   end
   

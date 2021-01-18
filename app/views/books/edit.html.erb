@@ -1,6 +1,7 @@
 <div class='row'>
   <div class='col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto'>
     <h1>Editing Book</h1>
+    <%= render 'layouts/error_message', model: @book %>
     <%= form_for(@book) do |f| %>
       <h4>Title</h4>
       <%= f.text_field :title %>
@@ -8,6 +9,7 @@
       <%= f.text_area :opinion %><br>
       <%= f.submit "Update Book", class: "btn btn-success mb-3" %>
     <% end %>
-    <%= link_to 'back', book_path(@book) %> 
+    <%= link_to 'Show', book_path(@book) %></br>
+    <%= link_to 'Back', books_path %> 
   </div>
 </div>
